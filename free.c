@@ -8,6 +8,8 @@ double **copy_to_temp(double **, int, int);
 double **remove_zeros(double **, int, int);
 int zero_str_stlb(double **, int, int);
 
+void free_matrix(double **, int);
+
 int main()
 {
     int n, k;               // Размерность массива
@@ -30,8 +32,9 @@ int main()
 
     double x = count_determinant(ar, n, k);
 
-    printf("%.1f", x);
-    free(ar);
+    printf("%.1f\n", x);
+
+    free_matrix(ar, n);
     return 0;
 }
 
@@ -50,7 +53,7 @@ double **to_uptriang_matrix(double **ar, int h, int w)
             double x; // Вычитаемое значение (верхняя строчка типа)
             double y; // Ззначение которое нужно обнулить
 
-            if (temp[j + 1][i] != 0.0) // Если значение которое нужно обнулить уже обнулено, то мы ничего не делаем  сразу переходим к след шагу!
+            if (temp[j + 1][i] != 0.0) // Если значение которое нужно обнулить уже обнулено, то мы ничего не делаем сразу переходим к след шагу!
             {
                 x = temp[i][i];
                 y = temp[j + 1][i];
@@ -113,14 +116,13 @@ double count_determinant(double **ar, int h, int w)
     }
 
     double res = 1.0;
-
     printf("\n");
 
     for (int i = 0; i < h; i++)
-        res = res * temp[i][i];
+        res *= temp[i][i];
 
-    printf("\n");
-    free(temp); //
+    free_matrix(temp, h);
+
     return res;
 }
 
@@ -160,5 +162,13 @@ double **remove_zeros(double **ar, int w, int h)
             }
         }
 
+    free_matrix(ar, h); // освобождаем старый массив
     return temp;
+}
+
+void free_matrix(double **ar, int r)
+{
+    for (int i = 0; i < r; i++)
+        free(ar[i]);
+    free(ar);
 }

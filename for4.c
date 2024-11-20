@@ -1,30 +1,31 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 int *sort(int *, int);
 
 int main(void)
 {
-    int n;
+    int n = 0;
     scanf("%d", &n);
     int mas[n];
     for (int i = 0; i < n; ++i)
         scanf("%d", &mas[i]);
-    printf("\n");
 
-    for (int i = 0; i < n; ++i)
-        printf("%d ", mas[i]);
-    int *ptr_mas = mas;
-    printf("\n%d", ptr_mas[2]);
+    int *ptr = mas;
+
+    int *res = sort(ptr, n);
+    printf("\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", res[i]);
 
     return 0;
 }
 
 int *sort(int *ms, int len)
 {
-    int *sorted = malloc((len + 1) * sizeof(int));
-    memcpy(sorted, ms, (len + 1) * sizeof(int));
+    int *sorted = malloc((len) * sizeof(int));
+    memcpy(sorted, ms, (len) * sizeof(int));
 
     for (int i = 0; i < len; i++)
         for (int j = 0; j < len - 1 - i; j++)
@@ -34,6 +35,5 @@ int *sort(int *ms, int len)
                 sorted[j] = sorted[j + 1];
                 sorted[j + 1] = temp;
             }
-    free(sorted);
     return sorted;
 }
